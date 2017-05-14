@@ -30,8 +30,24 @@ answers <- data.frame(Species = iris_df$Species)
 iris_df <- iris_df[1:4]
 ```
 
+### Exploritory Visualizations
 
+We're now ready to look at the data. 
 
+```{r warning=FALSE}
+library(ggplot2)
+library(gridExtra)
+plot_1 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point()
+plot_2 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point()
+plot_3 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                stat_density_2d()
+plot_4 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                stat_density_2d()
+
+grid.arrange(plot_1, plot_2, plot_3, plot_4, ncol = 2, nrow = 2)
+```
 
 
 
