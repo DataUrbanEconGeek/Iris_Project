@@ -50,6 +50,8 @@ plot_4 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
 grid.arrange(plot_1, plot_2, plot_3, plot_4, ncol = 2, nrow = 2)
 ```
 
+### Hierarchical Clustering
+
 ```{r}
 iris_dist <- dist(iris_df, method = "euclidean")
 
@@ -60,17 +62,23 @@ model_1_cut <- cutree(model_1, 3)
 table(species, model_1_cut)
 ```
 
-```{r}
+```{r echo=FALSE}
 plot_5 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = factor(model_1_cut)))
+                geom_point(aes(col = factor(model_1_cut))) +
+                theme(legend.position = "none") +
+                theme(axis.title.x = element_blank())
 plot_6 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
-                geom_point(aes(col = factor(model_1_cut)))
+                geom_point(aes(col = factor(model_1_cut))) +
+                scale_color_discrete(name = "Clusters     ") +
+                theme(axis.title.x = element_blank())
 plot_7 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = species))
+                geom_point(aes(col = species)) +
+                theme(legend.position = "none")
 plot_8 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
                 geom_point(aes(col = species))
 
-grid.arrange(plot_5, plot_6, plot_7,  plot_8, ncol = 2, nrow = 2)
+grid.arrange(plot_5, plot_6, plot_7,  plot_8, ncol = 2, nrow = 2,
+             widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
 ```{r}
@@ -83,18 +91,27 @@ model_2_cut <- cutree(model_2, 3)
 table(species, model_2_cut)
 ```
 
-```{r}
+```{r echo=FALSE}
 plot_9 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = factor(model_2_cut)))
+                geom_point(aes(col = factor(model_2_cut))) +
+                theme(legend.position = "none") +
+                theme(axis.title.x = element_blank()) +
+                scale_color_manual(values=c("#F8766D", "#619CFF", "#00BA38"))
 plot_10 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
-                geom_point(aes(col = factor(model_2_cut)))
+                geom_point(aes(col = factor(model_2_cut))) +
+                scale_color_manual(name = "Clusters     ", values=c("#F8766D", "#619CFF", "#00BA38")) +
+                theme(axis.title.x = element_blank())
 plot_11 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = species))
+                geom_point(aes(col = species)) +
+                theme(legend.position = "none")
 plot_12 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
                 geom_point(aes(col = species))
 
-grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2)
+grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
+             widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
+
+### K-Means Clustering
 
 ```{r}
 set.seed(3949)
@@ -104,15 +121,21 @@ model_3 <- kmeans(iris_df, centers = 3)
 
 ```{r}
 plot_13 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = factor(model_3$cluster)))
+                geom_point(aes(col = factor(model_3_cut))) +
+                theme(legend.position = "none") +
+                theme(axis.title.x = element_blank())
 plot_14 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
-                geom_point(aes(col = factor(model_3$cluster)))
+                geom_point(aes(col = factor(model_3_cut))) +
+                scale_color_discrete(name = "Clusters     ") +
+                theme(axis.title.x = element_blank())
 plot_15 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = species))
+                geom_point(aes(col = species)) +
+                theme(legend.position = "none")
 plot_16 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
                 geom_point(aes(col = species))
 
-grid.arrange(plot_13, plot_14, plot_15,  plot_16, ncol = 2, nrow = 2)
+grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
+             widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
 
