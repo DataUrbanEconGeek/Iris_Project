@@ -23,10 +23,11 @@ iris_df <- iris
 str(iris)
 ```
 
-We can see here that this data-set contains 150 observations. We also see that four of our variables are quantitative and one variable(species) is categorical. Some manipulation will have to be done to the data set before we begin. We're going to remove the species variable for now and save it in a different data-frame called answers for later. 
+We can see here that this data-set contains 150 observations. We also see that four of our variables are quantitative and one variable(species) is categorical. Some manipulation will have to be done to the data set before we begin. We're going to remove the species variable for now and save it in a different list for later. 
 
 ```{r}
-answers <- data.frame(Species = iris_df$Species)
+species <- as.list(iris_df$Species)
+species <- unlist(species)
 iris_df <- iris_df[1:4]
 ```
 
@@ -49,16 +50,85 @@ plot_4 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
 grid.arrange(plot_1, plot_2, plot_3, plot_4, ncol = 2, nrow = 2)
 ```
 
+```{r}
+iris_dist <- dist(iris_df, method = "euclidean")
+
+model_1 <- hclust(iris_dist, method = "single")
+
+model_1_cut <- cutree(model_1, 3)
+
+table(species, model_1_cut)
+```
+
+```{r}
+plot_5 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = factor(model_1_cut)))
+plot_6 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = factor(model_1_cut)))
+plot_7 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = species))
+plot_8 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = species))
+
+grid.arrange(plot_5, plot_6, plot_7,  plot_8, ncol = 2, nrow = 2)
+```
+
+```{r}
+iris_dist <- dist(iris_df, method = "euclidean")
+
+model_2 <- hclust(iris_dist, method = "complete")
+
+model_2_cut <- cutree(model_2, 3)
+
+table(species, model_2_cut)
+```
+
+```{r}
+plot_9 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = factor(model_2_cut)))
+plot_10 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = factor(model_2_cut)))
+plot_11 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = species))
+plot_12 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = species))
+
+grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2)
+```
+
+```{r}
+set.seed(3949)
+model_3 <- kmeans(iris_df, centers = 3)
+```
+
+
+```{r}
+plot_13 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = factor(model_3$cluster)))
+plot_14 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = factor(model_3$cluster)))
+plot_15 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
+                geom_point(aes(col = species))
+plot_16 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
+                geom_point(aes(col = species))
+
+grid.arrange(plot_13, plot_14, plot_15,  plot_16, ncol = 2, nrow = 2)
+```
 
 
 
+```{r}
+table(species, model_3$cluster)
+```
 
 
 
+```{r}
+iris_sc <- as.data.frame(scale(iris_df))
+model_4 <- kmeans(iris_sc, 3)
 
-
-
-
+table(species, model_4$cluster)
+```
 
 
 
