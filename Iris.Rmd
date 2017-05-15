@@ -19,7 +19,6 @@ We would normally load in the data, but because this data-set is widely used the
 
 ```{r}
 iris_df <- iris
-
 str(iris)
 ```
 
@@ -50,15 +49,17 @@ plot_4 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
 grid.arrange(plot_1, plot_2, plot_3, plot_4, ncol = 2, nrow = 2)
 ```
 
+From these plots we can easily see two distinct clusters, but we know from viewing the structure of the data-set above that there are three species of flowers. 
+
 ### Hierarchical Clustering
 
+The first type of clustering we'll try out is a Single Hierarchical Clustering. This type of clustering is Agglomerative, which means it takes a bottom up approach. Each observation starts in it's own cluster, pair's are then merged over and over again moving up the cluster. First we'll need to calculate the distance between pairs, this is achieved by using the `dist()` function. We'll use euclidean for the method. This will give use the ordinary straight line distance between two points. After we use the `hclust()` function with the method set to single. Since the function produce an entire tree of every cluster we'll have to cut it to create our 3 clusters to represent the iris species. `cutree()` is used for this.
+
 ```{r}
+set.seed(3949)
 iris_dist <- dist(iris_df, method = "euclidean")
-
 model_1 <- hclust(iris_dist, method = "single")
-
 model_1_cut <- cutree(model_1, 3)
-
 table(species, model_1_cut)
 ```
 
@@ -81,13 +82,11 @@ grid.arrange(plot_5, plot_6, plot_7,  plot_8, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
+By interpreting the confusion matrix and visualizations here we see that this clustering method was good at determining one group of flowers, but had a hard time distinguishing between the other two. If we decide to define cluster 1 as setosa, cluster 2 as versicolor, and cluster 3 as virginica, we end up with an accuracy of 68%. Not a very good model at all. We'll now try to use the complete method for hierarchical clustering. This method differs in how it find the shortest distance between to pairs by using the distance of two elements that are farthest away from each other.
+
 ```{r}
-iris_dist <- dist(iris_df, method = "euclidean")
-
 model_2 <- hclust(iris_dist, method = "complete")
-
 model_2_cut <- cutree(model_2, 3)
-
 table(species, model_2_cut)
 ```
 
@@ -111,21 +110,25 @@ grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
+This model show's a drastic improvement. Defining cluster 1 as setosa, cluster 2 as virginica and cluster 3 as versicolor we have and accuracy of 84%. It may be possible yet though to get better results by using a different clustering algorithm. 
+
 ### K-Means Clustering
+
+
 
 ```{r}
 set.seed(3949)
 model_3 <- kmeans(iris_df, centers = 3)
+table(species, model_3$cluster)
 ```
 
-
-```{r}
+```{r echo=FALSE}
 plot_13 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
-                geom_point(aes(col = factor(model_3_cut))) +
+                geom_point(aes(col = factor(model_3$cluster))) +
                 theme(legend.position = "none") +
                 theme(axis.title.x = element_blank())
 plot_14 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
-                geom_point(aes(col = factor(model_3_cut))) +
+                geom_point(aes(col = factor(model_3$cluster))) +
                 scale_color_discrete(name = "Clusters     ") +
                 theme(axis.title.x = element_blank())
 plot_15 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
@@ -137,13 +140,6 @@ plot_16 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
 grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
-
-
-
-```{r}
-table(species, model_3$cluster)
-```
-
 
 
 ```{r}
