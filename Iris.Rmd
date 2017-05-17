@@ -34,9 +34,10 @@ iris_df <- iris_df[1:4]
 
 We're now ready to look at the data. 
 
-```{r warning=FALSE}
+```{r warning=FALSE, echo=FALSE}
 library(ggplot2)
 library(gridExtra)
+library(knitr)
 plot_1 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
                 geom_point()
 plot_2 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
@@ -90,6 +91,7 @@ model_2_cut <- cutree(model_2, 3)
 table(species, model_2_cut)
 ```
 
+
 ```{r echo=FALSE}
 plot_9 <- ggplot(iris_df, aes(x = Petal.Length, y = Petal.Width)) +
                 geom_point(aes(col = factor(model_2_cut))) +
@@ -114,7 +116,7 @@ This model show's a drastic improvement. Defining cluster 1 as setosa, cluster 2
 
 ### K-Means Clustering
 
-
+K-means clustering works by initializing 'k' number of 'means' as random values in a data-set. Clusters are then created by associating every observation to it's nearest mean. A centroid is calculated for each cluster. That centriod becomes the new mean. The process then runs over and over again until convergence has been reached. R's stats package makes this an easy process. We'll simply use the `kmeans()` function, set with 3 centers.
 
 ```{r}
 set.seed(3949)
@@ -141,13 +143,19 @@ grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
+It is clear from the visualizations that using the k-means gives us the best result. If we assign setosa to cluster 2, versicolor to cluster 1, and virginica to cluster 3 we get an accuracy of 89.3%. 
 
-```{r}
-iris_sc <- as.data.frame(scale(iris_df))
-model_4 <- kmeans(iris_sc, 3)
+### Conclusion
 
-table(species, model_4$cluster)
-```
+Using the k-means method for clustering works well in separating out the different species from the Iris data-set. From here one could scale the data and then run the k-means method again, but considering that there are not any major outliers in the data-set and the values for the measurements are small, it is doubtful you would make a better model. Instead you could explore further methods of clustering. 
+
+#### Project Source Code
+
+https://github.com/PunkFood-Disme/Iris_Project
+
+
+
+
 
 
 
