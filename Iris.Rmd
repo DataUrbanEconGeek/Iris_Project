@@ -2,7 +2,7 @@
 title: 'Predicting Iris Species: Clustering'
 author: "Andrew Rosa"
 date: "5/13/2017"
-output: 
+output:
         html_document:
                 includes:
                         in_header: head.html
@@ -11,18 +11,18 @@ output:
 
 ### Background
 
-Edgar Anderson was an American botanist. In 1929 he had moved to Britain where he studied and worked at the John Innes Horticultural Institute. It was while studying here that he create a data set containing the sepal lengths, widths, and petal lengths and widths of three different Iris flower species. His coworker and statistician R.A. Fisher then used that data set as an example for statistical methods on classification. This project seeks to demonstrate predicting the classification of an Iris flower's species with the use of clustering algorithms. 
+Edgar Anderson was an American botanist. In 1929 he moved to Britain where he studied and worked at the John Innes Horticultural Institute. It was while studying here that he create a data set containing the sepal lengths and widths and petal lengths and widths of three different Iris flower species. His coworker and statistician R.A. Fisher then used that data set as an example for statistical methods on classification. This project seeks to demonstrate  prediction of the classification of an Iris flower's species with the use of clustering algorithms.
 
 ### First
 
-We would normally load in the data, but because this data-set is widely used the CRAN community has already provided the data-set in R's base data-sets package. We can immediately start to use it.
+We would normally load in the data, but because this data set is widely used, the CRAN community has already provided the data set in R's base data sets package. We can immediately start to use it.
 
 ```{r}
 iris_df <- iris
 str(iris)
 ```
 
-We can see here that this data-set contains 150 observations. We also see that four of our variables are quantitative and one variable(species) is categorical. Some manipulation will have to be done to the data set before we begin. We're going to remove the species variable for now and save it in a different list for later. 
+We can see here that this data set contains 150 observations. We also see that four of our variables are quantitative and one variable (species) is categorical. Some manipulation will have to be done to the data set before we begin. We're going to remove the species variable for now and save it in a different list for later.
 
 ```{r}
 species <- as.list(iris_df$Species)
@@ -32,7 +32,7 @@ iris_df <- iris_df[1:4]
 
 ### Exploritory Visualizations
 
-We're now ready to look at the data. 
+We're now ready to look at the data.
 
 ```{r warning=FALSE, echo=FALSE}
 library(ggplot2)
@@ -50,11 +50,11 @@ plot_4 <- ggplot(iris_df, aes(x = Sepal.Length, y = Sepal.Width)) +
 grid.arrange(plot_1, plot_2, plot_3, plot_4, ncol = 2, nrow = 2)
 ```
 
-From these plots we can easily see two distinct clusters, but we know from viewing the structure of the data-set above that there are three species of flowers. 
+From these plots we can easily see two distinct clusters, but we know from viewing the structure of the data set above that there are three species of flowers.
 
 ### Hierarchical Clustering
 
-The first type of clustering we'll try out is a Single Hierarchical Clustering. This type of clustering is Agglomerative, which means it takes a bottom up approach. Each observation starts in it's own cluster, pair's are then merged over and over again moving up the cluster. First we'll need to calculate the distance between pairs, this is achieved by using the `dist()` function. We'll use euclidean for the method. This will give use the ordinary straight line distance between two points. After we use the `hclust()` function with the method set to single. Since the function produce an entire tree of every cluster we'll have to cut it to create our 3 clusters to represent the iris species. `cutree()` is used for this.
+The first type of clustering we'll try out is a Single Hierarchical Clustering. This type of clustering is Agglomerative, which means it takes a bottom up approach. Each observation starts in its own cluster, pairs are then merged over and over again moving up the cluster. First, we'll need to calculate the distance between pairs; this is achieved by using the `dist()` function. We'll use "euclidean" for the method. This will give us the ordinary straight line distance between two points. Next, we'll use the `hclust()` function with the method set to "single". Since the function produce an entire tree of every cluster we'll have to cut it to create our 3 clusters to represent the iris species. We'll use `cutree()` for this.
 
 ```{r}
 set.seed(3949)
@@ -83,7 +83,7 @@ grid.arrange(plot_5, plot_6, plot_7,  plot_8, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
-By interpreting the confusion matrix and visualizations here we see that this clustering method was good at determining one group of flowers, but had a hard time distinguishing between the other two. If we decide to define cluster 1 as setosa, cluster 2 as versicolor, and cluster 3 as virginica, we end up with an accuracy of 68%. Not a very good model at all. We'll now try to use the complete method for hierarchical clustering. This method differs in how it find the shortest distance between to pairs by using the distance of two elements that are farthest away from each other.
+By interpreting the confusion matrix and visualizations here, we see that this clustering method was good at determining one group of flowers, but had a hard time distinguishing between the other two. If we decide to define cluster 1 as setosa, cluster 2 as versicolor, and cluster 3 as virginica, we end up with an accuracy of 68%. Not a very good model at all. We'll now try to use the "complete" method for hierarchical clustering. This method differs in how it finds the shortest distance between two pairs by using the distance of the two elements that are farthest away from each other.
 
 ```{r}
 model_2 <- hclust(iris_dist, method = "complete")
@@ -112,11 +112,11 @@ grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
-This model show's a drastic improvement. Defining cluster 1 as setosa, cluster 2 as virginica and cluster 3 as versicolor we have and accuracy of 84%. It may be possible yet though to get better results by using a different clustering algorithm. 
+This model shows a dramatic improvement. Defining cluster 1 as setosa, cluster 2 as virginica and cluster 3 as versicolor, we have an accuracy of 84%. It may yet be possible to get better results, though, by using a different clustering algorithm.
 
 ### K-Means Clustering
 
-K-means clustering works by initializing 'k' number of 'means' as random values in a data-set. Clusters are then created by associating every observation to it's nearest mean. A centroid is calculated for each cluster. That centriod becomes the new mean. The process then runs over and over again until convergence has been reached. R's stats package makes this an easy process. We'll simply use the `kmeans()` function, set with 3 centers.
+K-means clustering works by initializing 'k' number of 'means' as random values in a data set. Clusters are then created by associating every observation to its nearest mean. A centroid is calculated for each cluster. That centroid becomes the new mean. The process then runs over and over again until convergence has been reached. R's stats package makes this an easy process. We'll simply use the `kmeans()` function, set with 3 centers.
 
 ```{r}
 set.seed(3949)
@@ -143,20 +143,12 @@ grid.arrange(plot_9, plot_10, plot_11,  plot_12, ncol = 2, nrow = 2,
              widths = c(2.3, 3.2), heights = c(2.6, 2.8))
 ```
 
-It is clear from the visualizations that using the k-means gives us the best result. If we assign setosa to cluster 2, versicolor to cluster 1, and virginica to cluster 3 we get an accuracy of 89.3%. 
+It is clear from the visualizations that using k-means gives us the best result. If we assign setosa to cluster 2, versicolor to cluster 1, and virginica to cluster 3 we get an accuracy of 89.3%.
 
 ### Conclusion
 
-Using the k-means method for clustering works well in separating out the different species from the Iris data-set. From here one could scale the data and then run the k-means method again, but considering that there are not any major outliers in the data-set and the values for the measurements are small, it is doubtful you would make a better model. Instead you could explore further methods of clustering. 
+Using the k-means method for clustering works well in separating out the different species from the Iris data set. From here one could scale the data and then run the k-means method again, but considering that there are not any major outliers in the data set and the values for the measurements are small, it is doubtful that would make a better model. Instead, you could explore further methods of clustering.
 
 #### Project Source Code
 
 https://github.com/PunkFood-Disme/Iris_Project
-
-
-
-
-
-
-
-
