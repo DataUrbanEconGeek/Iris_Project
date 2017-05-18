@@ -11,7 +11,7 @@ output:
 
 ### Background
 
-Edgar Anderson was an American botanist. In 1929 he moved to Britain where he studied and worked at the John Innes Horticultural Institute. It was while studying here that he create a data set containing the sepal lengths and widths and petal lengths and widths of three different Iris flower species. His coworker and statistician R.A. Fisher then used that data set as an example for statistical methods on classification. This project seeks to demonstrate  prediction of the classification of an Iris flower's species with the use of clustering algorithms.
+Edgar Anderson was an American botanist. In 1929 he moved to Britain where he studied and worked at the John Innes Horticultural Institute. It was while studying here that he created a data set containing the sepal lengths and widths and petal lengths and widths of three different Iris flower species. His coworker and statistician R.A. Fisher then used that data set as an example for statistical methods on classification. This project seeks to demonstrate  prediction of the classification of an Iris flower's species with the use of clustering algorithms.
 
 ### First
 
